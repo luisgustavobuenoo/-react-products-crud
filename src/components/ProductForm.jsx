@@ -1,77 +1,72 @@
-import { useState } from "react"
+import React, { useState, useEffect } from 'react';
 
 function ProductForm({ product, onSave, onCancel }) {
+  const [formData, setFormData] = useState({ name: '', price: '', category: '' });
 
-  const [name, setName] = useState(product.name || "")
-  const [price, setPrice] = useState(product.price || "")
-  const [category, setCategory] = useState(product.category || "")
+  useEffect(() => {
+    if (product && product.id) {
+      setFormData(product);
+    } else {
+      setFormData({ name: '', price: '', category: '' });
+    }
+  }, [product]);
 
-  function handleSubmit(e) {
-    e.preventDefault()
-
-    onSave({
-      ...product,
-      name,
-      price,
-      category
-    })
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave(formData);
+    setFormData({ name: '', price: '', category: '' });
+  };
 
   return (
-    <div className="container">
+    <form onSubmit={handleSubmit} className="form-container">
 
-      <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Nome"
+        value={formData.name}
+        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        data-testid="product-name-input"
+        required
+      />
 
-        <h2 style={{marginBottom:20}}>Produto</h2>
+      <input
+        type="text"
+        placeholder="Preço"
+        value={formData.price}
+        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+        data-testid="product-price-input"
+        required
+      />
 
-        <input
-          placeholder="Nome do produto"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          data-testid="product-name-input"
-        />
+      <input
+        type="text"
+        placeholder="Categoria"
+        value={formData.category}
+        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+        data-testid="product-category-input"
+        required
+      />
 
-        <input
-          placeholder="Preço"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          data-testid="product-price-input"
-        />
+      <button
+  type="submit"
+  className="save-btn"
+  data-testid="save-product-button"
+>
+  Salvar
+</button>
 
-        <input
-          placeholder="Categoria"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          data-testid="product-category-input"
-        />
+      {product?.id && (
+        <button
+          type="button"
+          onClick={onCancel}
+          className="cancel-btn"
+        >
+          Cancelar Edição
+        </button>
+      )}
 
-        <div style={{marginTop:10}}>
-
-          <button
-            className="create-btn"
-            data-testid="save-product-button"
-            type="submit"
-          >
-            Salvar
-          </button>
-
-          {" "}
-
-          <button
-            className="delete-btn"
-            data-testid="cancel-product-button"
-            type="button"
-            onClick={onCancel}
-          >
-            Cancelar
-          </button>
-
-        </div>
-
-      </form>
-
-    </div>
-  )
+    </form>
+  );
 }
 
-export default ProductForm
+export default ProductForm;

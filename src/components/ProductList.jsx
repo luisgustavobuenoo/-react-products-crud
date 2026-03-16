@@ -1,15 +1,9 @@
-function ProductList({ products, onEdit, onDelete, onCreate }) {
+import React from "react";
+
+function ProductList({ products, onEdit, onDelete }) {
 
   return (
-    <div className="container">
-
-      <button
-        className="create-btn"
-        data-testid="create-product-button"
-        onClick={onCreate}
-      >
-        Criar Produto
-      </button>
+    <div className="table-wrapper">
 
       <table>
 
@@ -24,46 +18,62 @@ function ProductList({ products, onEdit, onDelete, onCreate }) {
 
         <tbody>
 
-          {products.map(product => (
+          {products.length > 0 ? (
+            products.map((product) => (
 
-            <tr key={product.id} data-testid="product-row">
+              <tr key={product.id}>
 
-              <td>{product.name}</td>
-              <td>R$ {product.price}</td>
-              <td>{product.category}</td>
+                <td data-testid="product-name">
+                  {product.name}
+                </td>
 
-              <td>
+                <td data-testid="product-price">
+                  {product.price}
+                </td>
 
-                <button
-                  className="edit-btn"
-                  data-testid="edit-product-button"
-                  onClick={() => onEdit(product)}
-                >
-                  Editar
-                </button>
+                <td data-testid="product-category">
+                  {product.category}
+                </td>
 
-                {" "}
+                <td>
 
-                <button
-                  className="delete-btn"
-                  data-testid="delete-product-button"
-                  onClick={() => onDelete(product.id)}
-                >
-                  Excluir
-                </button>
+                  <button
+                    className="action-btn edit-btn"
+                    data-testid="edit-product-button"
+                    onClick={() => onEdit(product)}
+                  >
+                    Editar
+                  </button>
 
+                  <button
+                    className="action-btn delete-btn"
+                    data-testid="delete-product-button"
+                    onClick={() => onDelete(product.id)}
+                  >
+                    Excluir
+                  </button>
+
+                </td>
+
+              </tr>
+
+            ))
+          ) : (
+
+            <tr>
+              <td colSpan="4" style={{ textAlign: "center" }}>
+                Nenhum produto cadastrado
               </td>
-
             </tr>
 
-          ))}
+          )}
 
         </tbody>
 
       </table>
 
     </div>
-  )
+  );
 }
 
-export default ProductList
+export default ProductList;

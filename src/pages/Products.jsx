@@ -1,6 +1,7 @@
 import { useState } from "react"
 import ProductList from "../components/ProductList"
 import ProductForm from "../components/ProductForm"
+import "../style.css";
 
 function Products() {
 
@@ -8,23 +9,16 @@ function Products() {
   const [editingProduct, setEditingProduct] = useState(null)
 
   function saveProduct(product) {
-
     if (product.id) {
-
       setProducts(
         products.map(p =>
           p.id === product.id ? product : p
         )
       )
-
     } else {
-
       product.id = Date.now()
-
       setProducts([...products, product])
-
     }
-
     setEditingProduct(null)
   }
 
@@ -35,28 +29,63 @@ function Products() {
   return (
     <div className="container">
 
-      <h1 style={{marginBottom:20}}>
-        Gerenciamento de Produtos
-      </h1>
+      <main className="main-card">
 
-      {editingProduct !== null ? (
+        <header className="card-header">
+          <h1>Produtos</h1>
+          <p>Cadastre, edite e remova itens da sua lista.</p>
+        </header>
 
-        <ProductForm
-          product={editingProduct}
-          onSave={saveProduct}
-          onCancel={() => setEditingProduct(null)}
-        />
+        <div className="content-grid">
 
-      ) : (
+          {/* FORMULÁRIO */}
+          <section className="form-section">
 
-        <ProductList
-          products={products}
-          onEdit={setEditingProduct}
-          onDelete={deleteProduct}
-          onCreate={() => setEditingProduct({})}
-        />
+            <div style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
 
-      )}
+              <h2>
+                {editingProduct?.id ? "Editar produto" : "Novo produto"}
+              </h2>
+
+              <button
+  className="create-btn"
+  data-testid="create-product-button"
+  onClick={() => setEditingProduct({})}
+>
+  Novo Produto
+</button>
+
+            </div>
+
+            <ProductForm
+              product={editingProduct || {}}
+              onSave={saveProduct}
+              onCancel={() => setEditingProduct(null)}
+            />
+
+          </section>
+
+          {/* LISTA */}
+          <section className="table-section">
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+              <h2>Lista de produtos</h2>
+              <span className="items-badge">
+                {products.length} item(ns)
+              </span>
+            </div>
+
+            <ProductList
+              products={products}
+              onEdit={setEditingProduct}
+              onDelete={deleteProduct}
+            />
+
+          </section>
+
+        </div>
+
+      </main>
 
     </div>
   )
