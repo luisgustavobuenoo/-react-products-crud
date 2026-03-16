@@ -129,3 +129,8 @@ Selecione **E2E Testing** e execute os testes disponíveis.
 ## Autor
 
 Projeto desenvolvido como parte de um teste técnico utilizando **React** e **Cypress**.
+
+
+
+
+<img width="1898" height="901" alt="Captura de tela 2026-03-16 184748" src="https://github.com/user-attachments/assets/1814bce2-fe45-4f7f-8dbc-81f28d59d20f" />
